@@ -1,0 +1,115 @@
+
+<!DOCTYPE html>
+<html lang="pt">
+<head>
+  <meta charset="UTF-8">
+  <title>Calculadora Acústica</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="theme-color" content="#111111"/>
+  <link rel="icon" type="image/png" href="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAMAAAADACAIAAADdvvtQAAADuklEQVR4nO3dQW4TURBF0Q5iA2ZHrJwdwRYYWLKsQIzJc9v1fp8zzuBX9f3dUSZ5O51OG3zWl1cfgG4CIiIgIgIiIiAiAiIiICICIiIgIgIiIiAiAiIiICICIiIgIgIiIiAiAiIiICICIiIgIgIiIiAiAiIiICICIiIgIgIiIiAiAiIiICICIiIgIgIiIiAiAiIiICICIiIgIgIiIiAiAiIiICICIiIgIgIiIiAiX199gFl+/fxxz4+dvn3f+yQt3g7+D+fuLOa2I/d0xIAeEs1HjhbTsQLaNZ1rx8noEAE9rZs/LV/S4gG9MJ1rC2e0bEBD0rm2ZEZr/h1oYD3b1FOFVnsDVTyklV5FS72BKurZes55j3UC6noqXae9YYVPWPXDaP+c1b+BquvZ+s/fHVD79s+qpygOqHrv7/TO0hpQ78Y/UjpRZUClu/6nxrn6Amrc8v3qpusLiFHKAqq7oJ/QNWNTQF2bTRRNWhNQ0U4fomXemoCYqSOgluv4WBVTFwRUscedzJ+9ICAmmx7Q/Cu4t+EbmB4Qw40OaPjle5rJexgdEPMJiMjcgCa/t59v7DbmBkSFoQGNvXAvNHMnQwOihYCICIjIxIBmfuwnGLiZiQFRREBEBEREQETGBTTw98RRpu1nXEB0ERARAREREBEBEREQEQERERARAREREBEBEREQkXEBtf/viL1N28+4gOgiICICIiIgIhMDmvZ74hwDNzMxIIoIiIiAiAwNaODH/uVm7mRoQLSYG9DMC/cqY7cxNyAqCIjI6IDGvrefbPIeRgfEfNMDmnz5nmP4BqYHxHAFAQ2/gruaP3tBQFvDHvdQMXVHQIxVE1DFdXyglnlrAtp6dpormrQpoK1qs5/WNWNZQEzTF1DXBf1fddP1BbQVbvlOjXNVBrR17vq20olaA9pqN/5XvbMUB7Q17/1a9RTdAW3l29/6z/92Op1efYbHmPZPJP6pPZ2z+jfQRdfz6DrtDesEtPU8lZZz3mOdT9i1sZ+zldI5W+oNdDHzOc08VWjNN9DFkFfRkumcLR7Q2QszWjids0MEdPG0kpbv5uJYAZ3tmtFx0jk7YkDXHhLT0aK5dvSA3rmzpyMX846AiKz5dyCeRkBEBEREQEQERERARAREREBEBEREQEQERERARAREREBEBEREQEQERERARAREREBEBEREQEQERERARAREREBEBEREQEQERERARAREREBEBEREQEQERERARAREREBEBEREQEQERERARAREREBEBEREQER+AxNnsAfD3KnUAAAAAElFTkSuQmCC">
+  <style>
+    body { font-family: Arial, sans-serif; background: #111; color: #eee; padding: 20px; }
+    h2.title { font-size: 14px; color: #999; margin-bottom: 5px; }
+    h1 { color: #00ffd0; font-size: 22px; margin-bottom: 15px; }
+    label, input { display: block; margin: 10px 0; }
+    input { width: 120px; padding: 4px; }
+    .result { margin-top: 20px; background: #222; padding: 15px; border-radius: 5px; }
+    button { margin-top: 10px; padding: 8px 16px; background: #00ffd0; border: none; cursor: pointer; }
+    .assinatura { font-size: 12px; color: #777; margin-top: 30px; text-align: right; }
+  </style>
+  <script>
+    // Manifesto embutido
+    const manifest = {
+      name: "Calculadora Acústica",
+      short_name: "Acústica",
+      start_url: ".",
+      display: "standalone",
+      background_color: "#111111",
+      theme_color: "#00ffd0",
+      icons: [{ src: "data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAMAAAADACAIAAADdvvtQAAADuklEQVR4nO3dQW4TURBF0Q5iA2ZHrJwdwRYYWLKsQIzJc9v1fp8zzuBX9f3dUSZ5O51OG3zWl1cfgG4CIiIgIgIiIiAiAiIiICICIiIgIgIiIiAiAiIiICICIiIgIgIiIiAiAiIiICICIiIgIgIiIiAiAiIiICICIiIgIgIiIiAiAiIiICICIiIgIgIiIiAiAiIiICICIiIgIgIiIiAiAiIiICICIiIgIgIiIiAiX199gFl+/fxxz4+dvn3f+yQt3g7+D+fuLOa2I/d0xIAeEs1HjhbTsQLaNZ1rx8noEAE9rZs/LV/S4gG9MJ1rC2e0bEBD0rm2ZEZr/h1oYD3b1FOFVnsDVTyklV5FS72BKurZes55j3UC6noqXae9YYVPWPXDaP+c1b+BquvZ+s/fHVD79s+qpygOqHrv7/TO0hpQ78Y/UjpRZUClu/6nxrn6Amrc8v3qpusLiFHKAqq7oJ/QNWNTQF2bTRRNWhNQ0U4fomXemoCYqSOgluv4WBVTFwRUscedzJ+9ICAmmx7Q/Cu4t+EbmB4Qw40OaPjle5rJexgdEPMJiMjcgCa/t59v7DbmBkSFoQGNvXAvNHMnQwOihYCICIjIxIBmfuwnGLiZiQFRREBEBEREQETGBTTw98RRpu1nXEB0ERARAREREBEBEREQEQERERARAREREBEBEREQkXEBtf/viL1N28+4gOgiICICIiIgIhMDmvZ74hwDNzMxIIoIiIiAiAwNaODH/uVm7mRoQLSYG9DMC/cqY7cxNyAqCIjI6IDGvrefbPIeRgfEfNMDmnz5nmP4BqYHxHAFAQ2/gruaP3tBQFvDHvdQMXVHQIxVE1DFdXyglnlrAtp6dpormrQpoK1qs5/WNWNZQEzTF1DXBf1fddP1BbQVbvlOjXNVBrR17vq20olaA9pqN/5XvbMUB7Q17/1a9RTdAW3l29/6z/92Op1efYbHmPZPJP6pPZ2z+jfQRdfz6DrtDesEtPU8lZZz3mOdT9i1sZ+zldI5W+oNdDHzOc08VWjNN9DFkFfRkumcLR7Q2QszWjids0MEdPG0kpbv5uJYAZ3tmtFx0jk7YkDXHhLT0aK5dvSA3rmzpyMX846AiKz5dyCeRkBEBEREQEQERERARAREREBEBEREQEQERERARAREREBEBEREQEQERERARAREREBEBEREQEQERERARAREREBEBEREQEQERERARAREREBEBEREQEQERERARAREREBEBEREQEQERERARAREREBEBEREQER+AxNnsAfD3KnUAAAAAElFTkSuQmCC", sizes: "192x192", type: "image/png" }]
+    };
+    const blob = new Blob([JSON.stringify(manifest)], { type: 'application/json' });
+    const manifestURL = URL.createObjectURL(blob);
+    document.head.appendChild(Object.assign(document.createElement('link'), {
+      rel: 'manifest',
+      href: manifestURL
+    }));
+
+    // Service Worker embutido
+    if ('serviceWorker' in navigator) {
+      const swCode = `
+        self.addEventListener('install', e => {
+          e.waitUntil(caches.open('pwa-cache').then(cache => {
+            return cache.addAll(['.']);
+          }));
+        });
+        self.addEventListener('fetch', e => {
+          e.respondWith(
+            caches.match(e.request).then(r => r || fetch(e.request))
+          );
+        });
+      `;
+      const swBlob = new Blob([swCode], { type: 'application/javascript' });
+      const swURL = URL.createObjectURL(swBlob);
+      navigator.serviceWorker.register(swURL);
+    }
+  </script>
+</head>
+<body>
+  <h2 class="title">Calculadora Temperatura, Frequência, Distância, Tempo, Fase</h2>
+  <h1>Calculadora Acústica Completa</h1>
+
+  <label>Temperatura (°C): <input type="number" id="temp" value="20"></label>
+  <label>Frequência (Hz): (opcional) <input type="number" id="freq" value=""></label>
+  <label>Distância (m): (opcional) <input type="number" id="distance" value=""></label>
+  <label>Fase (°): (opcional) <input type="number" id="fase" value=""></label>
+
+  <button onclick="calcular()">Calcular</button>
+
+  <div class="result" id="resultado"></div>
+
+  <div class="assinatura">Pedro Martins</div>
+
+  <script>
+    function calcular() {
+      const temp = parseFloat(document.getElementById('temp').value);
+      const freqInput = document.getElementById('freq').value;
+      const distInput = document.getElementById('distance').value;
+      const faseInput = document.getElementById('fase').value;
+      const v = 331.4 + (0.6 * temp);
+
+      let freq = parseFloat(freqInput);
+      let dist = parseFloat(distInput);
+      let fase = parseFloat(faseInput);
+      let lambda, tempo;
+
+      if (!isNaN(freq)) {
+        lambda = v / freq;
+        if (!isNaN(dist)) {
+          tempo = (dist / v) * 1000;
+          fase = ((dist / lambda) * 360) % 360;
+        } else if (!isNaN(fase)) {
+          dist = (fase / 360) * lambda;
+          tempo = (dist / v) * 1000;
+        }
+      } else if (!isNaN(dist) && !isNaN(fase)) {
+        lambda = (dist * 360) / fase;
+        freq = v / lambda;
+        tempo = (dist / v) * 1000;
+      } else {
+        document.getElementById('resultado').innerHTML = `<strong>Por favor, preencha pelo menos dois campos: frequência, distância ou fase.</strong>`;
+        return;
+      }
+
+      document.getElementById('resultado').innerHTML = `
+        <strong>Velocidade do som:</strong> ${v.toFixed(2)} m/s<br>
+        <strong>Frequência:</strong> ${freq.toFixed(2)} Hz<br>
+        <strong>Comprimento de onda (λ):</strong> ${lambda.toFixed(4)} m<br>
+        <strong>Distância:</strong> ${dist.toFixed(4)} m<br>
+        <strong>Tempo de percurso:</strong> ${tempo.toFixed(2)} ms<br>
+        <strong>Fase:</strong> ${fase.toFixed(1)}°<br>
+      `;
+    }
+  </script>
+</body>
+</html>
